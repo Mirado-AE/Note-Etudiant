@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Candidats</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/note.css}">
+</head>
+
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="main-content">
+
+        <div class="success-message" th:if="${success}" th:text="${success}"></div>
+        <div class="error-message" th:if="${error}" th:text="${error}"></div>
+
+        <div class="two-columns">
+            
+            <div class="left-column">
+                <h3>Liste des Candidats</h3>
+                
+                <table class="notes-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Adresse</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="candidat : ${candidats}">
+                            <td th:text="${candidat.id}">1</td>
+                            <td th:text="${candidat.nom}">Doe</td>
+                            <td th:text="${candidat.prenom}">John</td>
+                            <td th:text="${candidat.adresse}">Adresse</td>
+                            <td class="actions">
+                                <a class="edit-btn" th:href="@{/candidat/edit/{id}(id=${candidat.id})}">Modifier</a>
+                                <a class="delete-btn" th:href="@{/candidat/delete/{id}(id=${candidat.id})}" 
+                                   onclick="return confirm('Supprimer ce candidat ?')">Supprimer</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${candidats.empty}">
+                            <td colspan="5" class="empty-message">Aucun candidat</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="right-column">
+                <h3 th:text="${candidat.id != null ? 'Modifier Candidat' : 'Ajouter Candidat'}">
+                    Ajouter Candidat
+                </h3>
+                
+                <form class="note-form" th:action="@{/candidat/save}" method="post" th:object="${candidat}">
+                    <input type="hidden" th:field="*{id}" />
+                    
+                    <div class="form-group">
+                        <label for="nom">Nom :</label>
+                        <input type="text" id="nom" th:field="*{nom}" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="prenom">Prénom :</label>
+                        <input type="text" id="prenom" th:field="*{prenom}" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="adresse">Adresse :</label>
+                        <textarea id="adresse" th:field="*{adresse}" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn" th:text="${candidat.id != null ? 'Modifier' : 'Ajouter'}">
+                            Ajouter
+                        </button>
+                        <a class="cancel-btn" th:href="@{/candidat/cancel}">Annuler</a>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+        
+    </div>
+
+</body>
+</html>
