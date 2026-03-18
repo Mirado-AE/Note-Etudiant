@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="navbar" class="navbar" th:classappend="${activePage} ? 'active-' + ${activePage} : ''">
+    <div class="navbar-header">
+        <!-- <h1>ETU003519</h1> -->
+        <h3>Gestion Notes</h3>
+    </div>
+    
+    <ul class="nav-menu">
+        <li class="nav-item" th:classappend="${activePage == 'accueil'} ? 'active' : ''">
+            <a th:href="@{/}">
+                <span class="nav-text">Accueil</span>
+            </a>
+        </li>
+
+        <li class="nav-item" th:classappend="${activePage == 'note'} ? 'active' : ''">
+            <a th:href="@{/note}">
+                <span class="nav-text">Note</span>
+            </a>
+        </li>
+
+        <li class="nav-item" th:classappend="${activePage == 'parametre'} ? 'active' : ''">
+            <a th:href="@{/parametre}">
+                <span class="nav-text">Paramètre</span>
+            </a>
+        </li>
+
+        <li class="nav-item" th:classappend="${activePage == 'candidat'} ? 'active' : ''">
+            <a th:href="@{/candidat}">
+                <span class="nav-text">Candidat</span>
+            </a>
+        </li>
+        
+        <li class="nav-item" th:classappend="${activePage == 'correcteur'} ? 'active' : ''">
+            <a th:href="@{/correcteur}">
+                <span class="nav-text">Correcteur</span>
+            </a>
+        </li>
+        
+        <li class="nav-item" th:classappend="${activePage == 'matiere'} ? 'active' : ''">
+            <a th:href="@{/matiere}">
+                <span class="nav-text">Matière</span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+</div>
+
+</html>

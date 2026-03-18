@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Paramètres</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/parametre.css}">
+</head>
+
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    
+    <div class="main-content">
+        
+        <div class="message-container">
+            <!-- <div class="success-message" th:if="${success}" th:text="${success}"></div> -->
+            <div class="error-message" th:if="${error}" th:text="${error}"></div>
+        </div>
+
+        <div class="two-columns">
+          
+            <div class="left-column">
+                <h3>Liste des Paramètres</h3>
+                
+                <table class="parametres-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Matière</th>
+                            <th>Opérateur</th>
+                            <th>Seuil Somme Diff</th>
+                            <th>Résolution</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="parametre : ${parametres}">
+                            <td th:text="${parametre.id}">1</td>
+                            <td th:text="${parametre.matiere.nom}">Mathématiques</td>
+                            <td th:text="${parametre.operateur.operateur}"> > </td>
+                            <td th:text="${parametre.seuilSumDiff}">5.0</td>
+                            <td th:text="${parametre.resolution.resolution}">moyenne</td>
+                            <td class="actions">
+                                <a class="edit-btn" th:href="@{/parametre/edit/{id}(id=${parametre.id})}">Modifier</a>
+                                <a class="delete-btn" th:href="@{/parametre/delete/{id}(id=${parametre.id})}" 
+                                   onclick="return confirm('Supprimer ce paramètre ?')">Supprimer</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${parametres.empty}">
+                            <td colspan="6" class="empty-message">Aucun paramètre</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="right-column">
+                <h3 th:text="${parametre.id != null ? 'Modifier Paramètre' : 'Ajouter Paramètre'}">
+                    Ajouter Paramètre
+                </h3>
+                
+                <form class="parametre-form" th:action="@{/parametre/save}" method="post">
+                    <input type="hidden" name="id" th:value="${parametre.id}" />
+                    
+                    <div class="form-group">
+                        <label for="matiere">Matière :</label>
+                        <select id="matiere" name="matiereId" required>
+                            <option value="">Sélectionner une matière</option>
+                            <option th:each="matiere : ${matieres}" 
+                                    th:value="${matiere.id}"
+                                    th:text="${matiere.nom}"
+                                    th:selected="${parametre.matiere != null and matiere.id == parametre.matiere.id}">
+                                Mathématiques
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="operateur">Opérateur :</label>
+                        <select id="operateur" name="operateurId" required>
+                            <option value="">Sélectionner un opérateur</option>
+                            <option th:each="operateur : ${operateurs}" 
+                                    th:value="${operateur.id}"
+                                    th:text="${operateur.operateur}"
+                                    th:selected="${parametre.operateur != null and operateur.id == parametre.operateur.id}">
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="seuil">Seuil Somme Diff :</label>
+                        <input type="number" id="seuil" name="seuilSumDiff" 
+                               th:value="${parametre.seuilSumDiff}" step="0.1" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="resolution">Résolution :</label>
+                        <select id="resolution" name="resolutionId" required>
+                            <option value="">Sélectionner une résolution</option>
+                            <option th:each="resolution : ${resolutions}" 
+                                    th:value="${resolution.id}"
+                                    th:text="${resolution.resolution}"
+                                    th:selected="${parametre.resolution != null and resolution.id == parametre.resolution.id}">
+                                moyenne
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn" th:text="${parametre.id != null ? 'Modifier' : 'Ajouter'}">
+                            Ajouter
+                        </button>
+                        <a class="cancel-btn" th:href="@{/parametre/cancel}">Annuler</a>
+                    </div>
+                </form>
+            </div>
+            
+        </div> 
+        
+    </div> 
+
+</body>
+</html>

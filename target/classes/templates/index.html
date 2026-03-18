@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil - Calcul de Note Finale</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    
+    <div class="main-content">
+
+        <div th:if="${error}" th:text="${error}"></div>
+
+        <div>
+            <h3>Sélectionnez les critères</h3>
+            
+            <form action="/calculer" method="post">
+                <div>
+                    <label>Candidat :</label><br>
+                    <select name="candidatId" required>
+                        <option value="">Sélectionner un candidat</option>
+                        <option th:each="candidat : ${candidats}" 
+                                th:value="${candidat.id}"
+                                th:text="${candidat.prenom + ' ' + candidat.nom}"
+                                th:selected="${candidatId != null and candidat.id == candidatId}">
+                        </option>
+                    </select>
+                </div>
+                <br>
+                
+                <div>
+                    <label>Matière :</label><br>
+                    <select name="matiereId" required>
+                        <option value="">Sélectionner une matière</option>
+                        <option th:each="matiere : ${matieres}" 
+                                th:value="${matiere.id}"
+                                th:text="${matiere.nom}"
+                                th:selected="${matiereId != null and matiere.id == matiereId}">
+                        </option>
+                    </select>
+                </div>
+                <br>
+                
+                <div>
+                    <label>Examen :</label><br>
+                    <select name="examenId" required>
+                        <option value="">Sélectionner un examen</option>
+                        <option th:each="examen : ${examens}" 
+                                th:value="${examen.id}"
+                                th:text="${examen.nom}"
+                                th:selected="${examenId != null and examen.id == examenId}">
+                        </option>
+                    </select>
+                </div>
+                <br>
+                
+                <div>
+                    <button type="submit">Valider</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Résultats -->
+        <div th:if="${notes != null}">
+            <h3 th:text="'Résultats pour ' + ${candidatNom} + ' - ' + ${matiereNom} + ' (' + ${examenNom} + ')'">
+                Résultats
+            </h3>
+
+            <div>
+                <h4>Notes :</h4>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Correcteur</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="note : ${notes}">
+                            <td th:text="${note.correcteur.prenom + ' ' + note.correcteur.nom}">Jean Dupont</td>
+                            <td th:text="${note.note}">15.5</td>
+                        </tr>
+                        <tr th:if="${notes.empty}">
+                            <td colspan="2">Aucune note pour cette combinaison</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <h4>Note Finale : 
+                    <span th:text="${noteFinale}">15.5</span>/20
+                </h4>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Notes</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/note.css}">
+</head>
+
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    
+    <div class="main-content">
+        
+        <div class="message-container">
+            <!-- <div class="success-message" th:if="${success}" th:text="${success}"></div> -->
+            <div class="error-message" th:if="${error}" th:text="${error}"></div>
+        </div>
+
+        <div class="two-columns">
+            
+            <div class="left-column">
+                <h3>Liste des Notes</h3>
+                
+                <table class="notes-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Correcteur</th>
+                            <th>Candidat</th>
+                            <th>Matière</th>
+                            <th>Examen</th>
+                            <th>Note</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="note : ${notes}">
+                            <td th:text="${note.id}">1</td>
+                            <td th:text="${note.correcteur.nom + ' ' + note.correcteur.prenom}">Dupont Jean</td>
+                            <td th:text="${note.candidat.nom + ' ' + note.candidat.prenom}">Martin Sophie</td>
+                            <td th:text="${note.matiere.nom}">Mathématiques</td>
+                            <td th:text="${note.examen.nom}">Examen final</td>
+                            <td th:text="${note.note}">15.5</td>
+                            <td class="actions">
+                                <a class="edit-btn" th:href="@{/note/edit/{id}(id=${note.id})}">Modifier</a>
+                                <a class="delete-btn" th:href="@{/note/delete/{id}(id=${note.id})}" 
+                                   onclick="return confirm('Supprimer cette note ?')">Supprimer</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${notes.empty}">
+                            <td colspan="7" class="empty-message">Aucune note</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="right-column">
+                <h3 th:text="${note.id != null ? 'Modifier Note' : 'Ajouter Note'}">
+                    Ajouter Note
+                </h3>
+                
+                <form class="note-form" th:action="@{/note/save}" method="post">
+                    <input type="hidden" name="id" th:value="${note.id}" />
+                    
+                    <div class="form-group">
+                        <label for="correcteur">Correcteur :</label>
+                        <select id="correcteur" name="correcteurId" required>
+                            <option value="">Sélectionner un correcteur</option>
+                            <option th:each="correcteur : ${correcteurs}" 
+                                    th:value="${correcteur.id}"
+                                    th:text="${correcteur.nom + ' ' + correcteur.prenom}"
+                                    th:selected="${note.correcteur != null and correcteur.id == note.correcteur.id}">
+                                Dupont Jean
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="candidat">Candidat :</label>
+                        <select id="candidat" name="candidatId" required>
+                            <option value="">Sélectionner un candidat</option>
+                            <option th:each="candidat : ${candidats}" 
+                                    th:value="${candidat.id}"
+                                    th:text="${candidat.nom + ' ' + candidat.prenom}"
+                                    th:selected="${note.candidat != null and candidat.id == note.candidat.id}">
+                                Martin Sophie
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="matiere">Matière :</label>
+                        <select id="matiere" name="matiereId" required>
+                            <option value="">Sélectionner une matière</option>
+                            <option th:each="matiere : ${matieres}" 
+                                    th:value="${matiere.id}"
+                                    th:text="${matiere.nom}"
+                                    th:selected="${note.matiere != null and matiere.id == note.matiere.id}">
+                                Mathématiques
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="examen">Examen :</label>
+                        <select id="examen" name="examenId" required>
+                            <option value="">Sélectionner un examen</option>
+                            <option th:each="examen : ${examens}" 
+                                    th:value="${examen.id}"
+                                    th:text="${examen.nom}"
+                                    th:selected="${note.examen != null and examen.id == note.examen.id}">
+                                Examen final
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="note">Note :</label>
+                        <input type="number" id="note" name="noteValue" th:value="${note.note}" 
+                               step="0.01" min="0" max="20" required />
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn" th:text="${note.id != null ? 'Modifier' : 'Ajouter'}">
+                            Ajouter
+                        </button>
+                        <a class="cancel-btn" th:href="@{/note/cancel}">Annuler</a>
+                    </div>
+                </form>
+            </div>
+            
+        </div> 
+        
+    </div> 
+
+</body>
+</html>
