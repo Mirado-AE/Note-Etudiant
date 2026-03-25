@@ -38,6 +38,10 @@ public class Demande {
     @JoinColumn(name = "id_commune", nullable = false)
     private Commune commune;
 
+    @ManyToOne
+    @JoinColumn(name = "id_statut")
+    private Statut statut;
+
     @OneToMany(mappedBy = "demande", cascade = CascadeType.ALL)
     private List<Devis> devis;
 
@@ -46,5 +50,10 @@ public class Demande {
         if (dateDemande == null) {
             dateDemande = LocalDateTime.now();
         }
+    }
+
+    @Override
+    public String toString() {
+        return id != null ? id.toString() : "";
     }
 }

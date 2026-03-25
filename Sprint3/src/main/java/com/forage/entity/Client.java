@@ -37,4 +37,9 @@ public class Client {
             dateCreation = LocalDateTime.now();
         }
     }
+
+    @Override
+    public String toString() {
+        return id != null ? id.toString() : "";
+    }
 }
