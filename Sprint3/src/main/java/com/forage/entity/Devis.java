@@ -53,4 +53,9 @@ public class Devis {
             dateDevis = LocalDateTime.now();
         }
     }
+
+    @Override
+    public String toString() {
+        return id != null ? id.toString() : "";
+    }
 }

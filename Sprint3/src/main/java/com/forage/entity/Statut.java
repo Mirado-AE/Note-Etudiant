@@ -23,4 +23,9 @@ public class Statut {
 
     @OneToMany(mappedBy = "statut")
     private List<Devis> devis;
+
+    @Override
+    public String toString() {
+        return id != null ? id.toString() : "";
+    }
 }

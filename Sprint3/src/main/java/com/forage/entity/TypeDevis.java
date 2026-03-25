@@ -23,4 +23,9 @@ public class TypeDevis {
 
     @OneToMany(mappedBy = "typeDevis")
     private List<Devis> devis;
+
+    @Override
+    public String toString() {
+        return id != null ? id.toString() : "";
+    }
 }

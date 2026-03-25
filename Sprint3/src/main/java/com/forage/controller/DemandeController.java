@@ -86,4 +86,22 @@ public class DemandeController {
         model.addAttribute("demandes", demandeService.findByRegionId(regionId));
         return "demandes/list";
     }
+
+    /**
+     * Valider une demande - change son statut à "Valide"
+     */
+    @GetMapping("/valider/{id}")
+    public String validerDemande(@PathVariable Long id) {
+        demandeService.validerDemande(id);
+        return "redirect:/demandes";
+    }
+
+    /**
+     * Rejeter une demande - change son statut à "Annule"
+     */
+    @GetMapping("/rejeter/{id}")
+    public String rejeterDemande(@PathVariable Long id) {
+        demandeService.rejeterDemande(id);
+        return "redirect:/demandes";
+    }
 }

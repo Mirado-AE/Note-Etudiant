@@ -263,15 +263,14 @@
                                     <p>Aucune demande pour le moment</p>
                                 </div>
                                 <div th:unless="${#lists.isEmpty(demandes)}" class="list-group list-group-flush">
-                                    <a th:href="@{/demandes/edit/{id}(id=${demande.id})}" 
-                                       class="list-group-item list-group-item-action" 
-                                       th:each="demande : ${demandes}">
+                                    <div class="list-group-item" 
+                                        th:each="demande : ${demandes}">
                                         <div class="d-flex w-100 justify-content-between">
                                             <h6 class="mb-1" th:text="${demande.client?.nom}">Client</h6>
                                             <small th:text="${#temporals.format(demande.dateDemande, 'dd/MM/yyyy')}">Date</small>
                                         </div>
                                         <small class="text-muted" th:text="${demande.commune?.nom}">Commune</small>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -287,9 +286,8 @@
                                     <p>Aucun devis pour le moment</p>
                                 </div>
                                 <div th:unless="${#lists.isEmpty(devis)}" class="list-group list-group-flush">
-                                    <a th:href="@{/devis/edit/{id}(id=${d.id})}" 
-                                       class="list-group-item list-group-item-action" 
-                                       th:each="d : ${devis}">
+                                    <div class="list-group-item" 
+                                        th:each="d : ${devis}">
                                         <div class="d-flex w-100 justify-content-between">
                                             <h6 class="mb-1" th:text="${d.typeDevis?.libelle}">Type</h6>
                                             <small th:text="${#numbers.formatCurrency(d.montantTotal)}">Montant</small>
@@ -298,7 +296,7 @@
                                                th:classappend="${d.statutPaiement == 'Payé'} ? 'bg-success' : 
                                                                 (${d.statutPaiement == 'En attente'} ? 'bg-warning' : 'bg-secondary')"
                                                th:text="${d.statutPaiement}">Statut</small>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

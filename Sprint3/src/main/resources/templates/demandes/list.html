@@ -122,6 +122,7 @@
                             <th>Client</th>
                             <th>Localisation</th>
                             <th>Date</th>
+                            <th>Statut</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -137,9 +138,34 @@
                                 <small th:text="${demande.district?.nom}">District</small>
                             </td>
                             <td th:text="${#temporals.format(demande.dateDemande, 'dd/MM/yyyy')}">Date</td>
+                            <td>
+                                <span th:if="${demande.statut != null}" 
+                                      class="badge"
+                                      th:attr="class=${'badge ' + 
+                                        (demande.statut.libelle == 'Valide' ? 'bg-success' : 
+                                        demande.statut.libelle == 'Annule' ? 'bg-danger' : 
+                                        demande.statut.libelle == 'En cours' ? 'bg-primary' : 
+                                        'bg-secondary')}"
+                                      th:text="${demande.statut.libelle}">Statut</span>
+                                <span th:if="${demande.statut == null}" class="badge bg-secondary">Non defini</span>
+                            </td>
                             <td class="action-btns">
                                 <a th:href="@{/devis/by-demande/{id}(id=${demande.id})}" class="btn btn-sm btn-info" title="Devis">
                                     <i class="fas fa-file-invoice-dollar"></i>
+                                </a>
+                                <a th:if="${demande.statut == null or demande.statut.libelle != 'Valide'}" 
+                                   th:href="@{/demandes/valider/{id}(id=${demande.id})}" 
+                                   class="btn btn-sm btn-success" 
+                                   title="Valider"
+                                   onclick="return confirm('Voulez-vous valider cette demande ?')">
+                                    <i class="fas fa-check"></i>
+                                </a>
+                                <a th:if="${demande.statut == null or (demande.statut.libelle != 'Valide' and demande.statut.libelle != 'Annule')}" 
+                                   th:href="@{/demandes/rejeter/{id}(id=${demande.id})}" 
+                                   class="btn btn-sm btn-danger" 
+                                   title="Rejeter"
+                                   onclick="return confirm('Voulez-vous rejeter cette demande ?')">
+                                    <i class="fas fa-times"></i>
                                 </a>
                                 <a th:href="@{/demandes/edit/{id}(id=${demande.id})}" class="btn btn-sm btn-warning" title="Modifier">
                                     <i class="fas fa-edit"></i>
