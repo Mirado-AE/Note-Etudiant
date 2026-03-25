@@ -1,0 +1,19 @@
+package com.forage.repository;
+
+import com.forage.entity.Devis;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface DevisRepository extends JpaRepository<Devis, Long> {
+    
+    List<Devis> findByDemandeId(Long demandeId);
+    
+    List<Devis> findByTypeDevisId(Long typeDevisId);
+    
+    List<Devis> findByStatutId(Long statutId);
+    
+    List<Devis> findByStatutPaiement(String statutPaiement);
+}

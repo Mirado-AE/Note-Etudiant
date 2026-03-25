@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Forage Madagascar</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.5.1/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <style>
+        :root {
+            --primary-color: #0077b6;
+            --secondary-color: #00b4d8;
+            --accent-color: #90e0ef;
+            --dark-color: #03045e;
+            --light-color: #caf0f8;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, var(--dark-color), var(--primary-color));
+            min-height: 100vh;
+            color: white;
+            padding-top: 20px;
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.85);
+            padding: 12px 20px;
+            margin: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .sidebar .nav-link.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .sidebar .nav-link i {
+            width: 25px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        
+        .main-content {
+            padding: 30px;
+            background-color: #f8f9fa;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 12px 12px 0 0 !important;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 8px;
+            padding: 10px 25px;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--dark-color), var(--primary-color));
+            transform: scale(1.02);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #adb5bd);
+            border: none;
+            border-radius: 8px;
+        }
+        
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .table thead th {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            font-weight: 600;
+            border: none;
+            padding: 12px 15px;
+        }
+        
+        .table tbody tr {
+            transition: background-color 0.2s;
+        }
+        
+        .table tbody tr:hover {
+            background-color: var(--light-color);
+        }
+        
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 25px 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .search-box {
+            border-radius: 25px;
+            padding: 10px 20px;
+            border: 2px solid var(--light-color);
+        }
+        
+        .search-box:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0, 180, 216, 0.25);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        
+        .dropdown-menu {
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--light-color);
+        }
+        
+        .action-btns .btn {
+            padding: 5px 10px;
+            margin: 0 3px;
+        }
+    </style>
+</head>
+<body>
+    <div th:fragment="layout (title, content)" class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar">
+                <div class="text-center mb-4">
+                    <i class="fas fa-water fa-2x mb-2"></i>
+                    <h5 class="mb-0">Forage MG</h5>
+                    <small>Gestion des Services</small>
+                </div>
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">
+                            <i class="fas fa-home"></i> Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/clients}">
+                            <i class="fas fa-users"></i> Clients
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/demandes}">
+                            <i class="fas fa-file-alt"></i> Demandes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/devis}">
+                            <i class="fas fa-file-invoice-dollar"></i> Devis
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/paiements}">
+                            <i class="fas fa-money-bill-wave"></i> Paiements
+                        </a>
+                    </li>
+                    <li class="nav-item mt-3">
+                        <span class="nav-link disabled" style="color: rgba(255,255,255,0.5);">
+                            <i class="fas fa-map-marker-alt"></i> Géographie
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/regions}">
+                            <i class="fas fa-globe-africa"></i> Régions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/districts}">
+                            <i class="fas fa-map"></i> Districts
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/communes}">
+                            <i class="fas fa-landmark"></i> Communes
+                        </a>
+                    </li>
+                    <li class="nav-item mt-3">
+                        <span class="nav-link disabled" style="color: rgba(255,255,255,0.5);">
+                            <i class="fas fa-cog"></i> Configuration
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/types-devis}">
+                            <i class="fas fa-list-alt"></i> Types de Devis
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/statuts}">
+                            <i class="fas fa-check-circle"></i> Statuts
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/details-devis}">
+                            <i class="fas fa-stream"></i> Détails Devis
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-md-10 main-content">
+                <th:block th:replace="${content}" />
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/webjars/font-awesome/6.5.1/js/all.min.js}"></script>
+</body>
+</html>

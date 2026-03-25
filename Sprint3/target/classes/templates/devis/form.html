@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>devis.id == null</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar">
+                <div class="text-center mb-4">
+                    <i class="fas fa-water fa-2x mb-2"></i>
+                    <h5 class="mb-0">Forage MG</h5>
+                    <small>Gestion des Services</small>
+                </div>
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">
+                            <i class="fas fa-home"></i> Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/clients}">
+                            <i class="fas fa-users"></i> Clients
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/demandes}">
+                            <i class="fas fa-file-alt"></i> Demandes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/devis}">
+                            <i class="fas fa-file-invoice-dollar"></i> Devis
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/paiements}">
+                            <i class="fas fa-money-bill-wave"></i> Paiements
+                        </a>
+                    </li>
+                    <li class="nav-item mt-3">
+                        <span class="nav-link disabled" style="color: rgba(255,255,255,0.5);">
+                            <i class="fas fa-map-marker-alt"></i> GÃ©ographie
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/regions}">
+                            <i class="fas fa-globe-africa"></i> RÃ©gions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/districts}">
+                            <i class="fas fa-map"></i> Districts
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/communes}">
+                            <i class="fas fa-landmark"></i> Communes
+                        </a>
+                    </li>
+                    <li class="nav-item mt-3">
+                        <span class="nav-link disabled" style="color: rgba(255,255,255,0.5);">
+                            <i class="fas fa-cog"></i> Configuration
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/types-devis}">
+                            <i class="fas fa-list-alt"></i> Types de Devis
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/statuts}">
+                            <i class="fas fa-check-circle"></i> Statuts
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/details-devis}">
+                            <i class="fas fa-stream"></i> DÃ©tails Devis
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-md-10 main-content">
+
+    <div class="page-header mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="mb-1">
+                    <i class="fas fa-file-invoice-dollar me-2"></i>
+                    <span th:text="${devis.id == null} ? 'Nouveau Devis' : 'Modifier Devis'">Devis</span>
+                </h2>
+            </div>
+            <a th:href="@{/devis}" class="btn btn-light">
+                <i class="fas fa-arrow-left me-2"></i>Retour
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-edit me-2"></i>Informations du Devis
+        </div>
+        <div class="card-body">
+            <form th:action="@{/devis}" th:object="${devis}" method="post">
+                <input type="hidden" th:field="*{id}" />
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="demande" class="form-label">
+                            <i class="fas fa-file-alt me-2 text-primary"></i>Demande <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select" id="demande" th:field="*{demande}" required>
+                            <option value="">-- Sélectionnez une demande --</option>
+                            <option th:each="d : ${demandes}" th:value="${d.id}" 
+                                    th:text="${d.client?.nom} + ' - ' + ${d.commune?.nom}">Demande</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="typeDevis" class="form-label">
+                            <i class="fas fa-list-alt me-2 text-primary"></i>Type de Devis <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select" id="typeDevis" th:field="*{typeDevis}" required>
+                            <option value="">-- Sélectionnez un type --</option>
+                            <option th:each="t : ${typesDevis}" th:value="${t.id}" th:text="${t.libelle}">Type</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="montantTotal" class="form-label">
+                            <i class="fas fa-coins me-2 text-primary"></i>Montant Total (Ariary)
+                        </label>
+                        <input type="number" step="0.01" class="form-control" id="montantTotal" th:field="*{montantTotal}">
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <label for="dateDevis" class="form-label">
+                            <i class="fas fa-calendar me-2 text-primary"></i>Date du Devis
+                        </label>
+                        <input type="datetime-local" class="form-control" id="dateDevis" th:field="*{dateDevis}">
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <label for="statut" class="form-label">
+                            <i class="fas fa-check-circle me-2 text-primary"></i>Statut <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select" id="statut" th:field="*{statut}" required>
+                            <option value="">-- Sélectionnez un statut --</option>
+                            <option th:each="s : ${statuts}" th:value="${s.id}" th:text="${s.libelle}">Statut</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="statutPaiement" class="form-label">
+                        <i class="fas fa-money-bill me-2 text-primary"></i>Statut de Paiement
+                    </label>
+                    <select class="form-select" id="statutPaiement" th:field="*{statutPaiement}">
+                        <option value="En attente">En attente</option>
+                        <option value="Partiellement payé">Partiellement payé</option>
+                        <option value="Payé">Payé</option>
+                        <option value="Annulé">Annulé</option>
+                    </select>
+                </div>
+                
+                <hr class="my-4">
+                
+                <div class="d-flex justify-content-end gap-2">
+                    <a th:href="@{/devis}" class="btn btn-secondary">
+                        <i class="fas fa-times me-2"></i>Annuler
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
